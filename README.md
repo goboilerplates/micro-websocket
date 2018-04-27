@@ -48,8 +48,9 @@ bash script/coverage.sh
 
 Run main.go
 ``` bash
-go run main.go
+
 # serve at localhost:9000
+go run main.go
 ```
 
 Build and run native binary
