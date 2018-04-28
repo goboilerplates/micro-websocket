@@ -61,6 +61,8 @@ func (api GetSamplesAPIImpl) HandleMessage(conn *websocket.Conn, messageType int
 		keyword := message["keyword"].(string)
 		samples, err := api.Interactor.AllByName(keyword)
 		response = ConvertInterfaceToJSONBytes(samples, err)
+	default:
+		response = []byte("Not Found !")
 	}
 	conn.WriteMessage(messageType, response)
 }

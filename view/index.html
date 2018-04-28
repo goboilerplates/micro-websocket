@@ -1,13 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Boilerplate</title>
-  <link rel="icon" type="image/ico" href="/favicon.ico" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Boilerplate</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossorigin="anonymous">
 </head>
+
 <body>
-  <h1>Boilerplate for WebSocket Microservice in Go</h1>
+    <div id="app">
+        <div class="container">
+            <div class="row justify-content-center">
+                <h1>Boilerplate WebSocket</h1>
+            </div>
+            <div class="row justify-content-center">
+                <div>
+                    <input type="text" id="input-message-name" placeholder="Message" v-model="message.name">
+                    <input type="text" id="input-message-keyword" placeholder="Keyword" v-model="message.keyword">
+                    <button id="btn-send" @click="sendMessage">Send</button>
+                    <button id="btn-send" @click="clearResult">Clear</button>
+                </div>
+            </div>
+            <div class="row" v-for="(item, index) in results" :key="index">
+                <div class="col-12">
+                   <p>
+                       <b>{{index + 1}}</b>
+                   </p>
+                    <pre><code>
+                    {{item}}
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                conn: null,
+                message: {
+                 name: 'All',
+                 keyword: ''
+                },
+                results: []
+            },
+            created() {
+                url = 'ws://localhost:9000/api/v1/samples'
+                this.conn = new WebSocket(url)
+            },
+            methods: {
+                sendMessage() {
+                    this.conn.send(JSON.stringify(this.message))
+                },
+                clearResult () {
+                    this.results = []
+                }
+            },
+            mounted() {
+                this.conn.onmessage = function (msg) {
+                    this.results.push(msg.data)
+                }.bind(this)
+            }
+        })
+    </script>
 </body>
+
 </html>
