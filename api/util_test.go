@@ -36,10 +36,10 @@ func TestConvertInterfaceToJSONBytes(test *testing.T) {
 // TestConvertBytesToMap .
 func TestConvertBytesToMap(test *testing.T) {
 	sampleBytes, err := json.Marshal(SetupSample())
-	assert.NotNil(test, err)
+	assert.Nil(test, err)
 
 	result, err := api.ConvertBytesToMap(sampleBytes)
-	assert.NotNil(test, err)
+	assert.Nil(test, err)
 	assert.NotNil(test, result)
 	assert.Equal(test, result["Name"], "Sample")
 }
